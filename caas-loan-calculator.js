@@ -48,12 +48,10 @@ class CaasLoanCalculator extends Polymer.Element {
                 computed: 'computeNumberOfTerms(annuityIntervalInMonths, loanTermInMonths)'
             },
             _principleDebtPercentage: {
-                type: Number,
-                observer: '_log'
+                type: Number
             },
             _remainingDebtPercentage: {
-                type: Number,
-                // observer: '_log'
+                type: Number
             },
             chartColumns: {
                 type: Array,
@@ -65,10 +63,6 @@ class CaasLoanCalculator extends Polymer.Element {
 
             }
         };
-    }
-
-    _log(v) {
-        console.log(v);
     }
 
     computeNumberOfTerms(annuityIntervalInMonths, loanTermInMonths) {
