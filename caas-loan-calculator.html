@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../google-chart/google-chart.html">
 
 <dom-module id="caas-loan-calculator">
     <template>
@@ -8,41 +7,6 @@
         display: block;
       }
     </style>
-
-
-    <h2>Type:
-        <select class="" name="" value="{{loanType::change}}">
-            <option value="linear">Lineair</option>
-            <option value="annuity">Annuitair</option>
-            <option value="bullet">Bullet</option>
-        </select>
-    </h2>
-    <h2>Opgehaalde bedrag: <input type="number" name="principle" value="{{principle::change}}"> EURO</h2>
-    <h2>Annuiteit interval:
-        <select class="" name="" value="{{annuityIntervalInMonths::change}}">
-            <option value="3">3 maanden</option>
-            <option value="6">half jaar</option>
-            <option value="12">jaarlijks</option>
-        </select>
-        </h2>
-    <h2>Leningtijd: <input type="number" step="12" name="annuityIntervalInMonths" value="{{loanTermInMonths::change}}">  [[loanTermInMonths]] maanden</h2>
-    <h2>Aflosvrije periode:  <input type="number" step="12" name="gracePeriod" value="{{gracePeriod::change}}">  [[gracePeriod]] maanden</h2>
-    <h2>Rente (per jaar): <input type="number" name="interestRate" value="{{interestRate::change}}">%</h2>
-
-    <google-chart
-        type='area'
-        options='{"title": "Terugbetalingen", "vAxis": {"minValue" : 0}}'
-        cols='[[chartColumns]]'
-        rows='[[chartRows]]'>
-    </google-chart>
-
-    <h2>Terugbetalingschema</h2>
-
-    <ul>
-        <template is="dom-repeat" items="[[repayments]]" index-as="index">
-          <li>[[item.interestPercentage]]% [[item.interestAmount]]E -- [[item.principlePercentage]]% [[item.principleAmount]]E -- totaal: [[item.totalCurrentPayment]]E</li>
-        </template>
-    </ul>
 
   </template>
 
