@@ -14,7 +14,7 @@ class CaasLoanCalculator extends Polymer.Element {
         return {
             loanType: {
                 type: String,
-                value: 'annuity',
+                value: 'linear',
                 notify: true
             },
             principle: {
@@ -24,18 +24,22 @@ class CaasLoanCalculator extends Polymer.Element {
             },
             annuityIntervalInMonths: {
                 type: Number,
+                notify: true,
                 value: 12
             },
             loanTermInMonths:{
                 type: Number,
+                notify: true,
                 value: (5*12)
             },
             gracePeriod: {
                 type: Number,
-                value: 24
+                notify: true,
+                value: 12
             },
             interestRate: {
                 type: Number,
+                notify: true,
                 value: 10
             },
             repayments: {
@@ -45,6 +49,7 @@ class CaasLoanCalculator extends Polymer.Element {
             },
             terms: {
                 type: Number,
+                notify: true,
                 computed: 'computeNumberOfTerms(annuityIntervalInMonths, loanTermInMonths)'
             },
             _principleDebtPercentage: {
@@ -55,10 +60,12 @@ class CaasLoanCalculator extends Polymer.Element {
             },
             chartColumns: {
                 type: Array,
+                notify: true,
                 computed: 'parseChartColumns(repayments)'
             },
             chartRows: {
                 type: Array,
+                notify: true,
                 computed: 'parseChartRows(repayments)'
 
             }
@@ -66,7 +73,7 @@ class CaasLoanCalculator extends Polymer.Element {
     }
 
     computeNumberOfTerms(annuityIntervalInMonths, loanTermInMonths) {
-        return (parseInt(loanTermInMonths) / parseInt(annuityIntervalInMonths)) + 1;
+        return (parseInt(loanTermInMonths) / parseInt(annuityIntervalInMonths));
 
     }
 
@@ -99,15 +106,22 @@ class CaasLoanCalculator extends Polymer.Element {
     _createSingleLinearLoanPayment(principle, iteration, terms, interestRate, gracePeriod){
         var paymentFreeYears = gracePeriod / 12;
         var i = interestRate / 100; // accountants like breaks
+
         if(iteration == 0) {
-            this._principleDebtPercentage = Math.pow((1 + i), paymentFreeYears) * 100; //graceperiod affects this
+            // this._principleDebtPercentage = Math.pow((1+i), paymentFreeYears) * 100; //graceperiod affects this
+            this._principleDebtPercentage = Math.pow((1+i), (paymentFreeYears)) * 100; //graceperiod affects this
+            // this._remainingDebtPercentage = Math.pow((1+i), paymentFreeYears) * 100; //graceperiod affects this
+            this._remainingDebtPercentage = Math.pow((1+i), (paymentFreeYears)) * 100; //graceperiod affects this
         }
+        console.log(i, paymentFreeYears, this._remainingDebtPercentage);
 
         var T =  this._principleDebtPercentage;
         var n =  terms;
         var A_k = T / n;
         var R_k = (T - (iteration * A_k)) * i;
         var J = A_k + R_k;
+
+        this._remainingDebtPercentage = (this._remainingDebtPercentage - A_k);
 
         var interestPercentageCurrentPayment = R_k;
         var principlePercentageCurrentPayent = A_k;
