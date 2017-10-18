@@ -10,6 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../google-chart/google-chart.html">
     <link rel="import" href="../caas-loan-calculator.html">
 
     <custom-style>
@@ -21,9 +22,57 @@
     <div class="vertical-section-container centered">
       <h3>Basic caas-loan-calculator demo</h3>
       <demo-snippet>
-        <template>
-          <caas-loan-calculator></caas-loan-calculator>
+         <dom-bind>
+          <template>
+
+          <caas-loan-calculator
+            loan-type="{{loanType}}"
+            principle="{{principle}}"
+            annuity-interval-in-months="{{annuityIntervalInMonths}}"
+            loan-term-in-months="{{loanTermInMonths}}"
+            interest-rate="{{interestRate}}"
+            chart-columns="{{chartColumns}}"
+            chart-rows="{{chartRows}}"
+            repayments="{{repayments}}"
+            grace-period="{{gracePeriod}}"
+            terms="{{terms}}"
+          ></caas-loan-calculator>
+
+          <h2>Type:
+              <select class="" name="" value="{{loanType::change}}">
+                  <option value="linear">Lineair</option>
+                  <option value="annuity">Annuitair</option>
+                  <option value="bullet">Bullet</option>
+              </select>
+          </h2>
+          <h2>Opgehaalde bedrag: <input type="number" name="principle" value="{{principle::change}}"> EURO</h2>
+          <h2>Annuiteit interval:
+              <select class="" name="" value="{{annuityIntervalInMonths::change}}">
+                  <option value="3">3 maanden</option>
+                  <option value="6">half jaar</option>
+                  <option value="12">jaarlijks</option>
+              </select>
+              </h2>
+          <h2>Leningtijd: <input type="number" step="12" name="annuityIntervalInMonths" value="{{loanTermInMonths::change}}">  [[loanTermInMonths]] maanden</h2>
+          <h2>Aflosvrije periode:  <input type="number" step="12" name="gracePeriod" value="{{gracePeriod::change}}">  [[gracePeriod]] maanden</h2>
+          <h2>Rente (per jaar): <input type="number" name="interestRate" value="{{interestRate::change}}">%</h2>
+          <h2>[[terms]] aflossingen</h2>
+          <google-chart
+              type='area'
+              options='{"title": "Terugbetalingen", "xAxis": {"gridlines": 50} , "vAxis": {"minValue" : 0}, animation: {"startup": true}}'
+              cols='{{chartColumns}}'
+              rows='{{chartRows}}'>
+          </google-chart>
+
+          <h2>Terugbetalingschema</h2>
+
+          <ul>
+              <template is="dom-repeat" items="[[repayments]]" index-as="index">
+                <li>[[item.interestPercentage]]% [[item.interestAmount]]E -- [[item.principlePercentage]]% [[item.principleAmount]]E -- totaal: [[item.totalCurrentPayment]]E</li>
+              </template>
+          </ul>
         </template>
+       </dom-bind>
       </demo-snippet>
     </div>
   </body>
