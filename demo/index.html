@@ -1,78 +1,80 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>caas-loan-calculator demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../google-chart/google-chart.html">
-    <link rel="import" href="../caas-loan-calculator.html">
+    <script type="module">
+      import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+      import '@polymer/iron-demo-helpers/demo-snippet';
+      import { initGCharts } from 'google-chart-polymer-3/google-chart';
+      initGCharts(() => { })
+
+    </script>
+
+    <script type="module" src="../caas-loan-calculator.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
       </style>
+        <style>
+          google-chart {
+            height: 300px;
+            width: 400px;
+          }
+        </style>
     </custom-style>
   </head>
   <body>
     <div class="vertical-section-container centered">
       <h3>Basic caas-loan-calculator demo</h3>
       <demo-snippet>
-         <dom-bind>
+        <dom-bind>
           <template>
+            <caas-loan-calculator loan-type="{{loanType}}" principle="{{principle}}" annuity-interval-in-months="{{annuityIntervalInMonths}}"
+              loan-term-in-months="{{loanTermInMonths}}" interest-rate="{{interestRate}}" chart-columns="{{chartColumns}}"
+              chart-rows="{{chartRows}}" repayments="{{repayments}}" grace-period="{{gracePeriod}}" terms="{{terms}}"></caas-loan-calculator>
 
-          <caas-loan-calculator
-            loan-type="{{loanType}}"
-            principle="{{principle}}"
-            annuity-interval-in-months="{{annuityIntervalInMonths}}"
-            loan-term-in-months="{{loanTermInMonths}}"
-            interest-rate="{{interestRate}}"
-            chart-columns="{{chartColumns}}"
-            chart-rows="{{chartRows}}"
-            repayments="{{repayments}}"
-            grace-period="{{gracePeriod}}"
-            terms="{{terms}}"
-          ></caas-loan-calculator>
-
-          <h2>Type:
+            <h2>Type:
               <select class="" name="" value="{{loanType::change}}">
-                  <option value="linear">Lineair</option>
-                  <option value="annuity">Annuitair</option>
-                  <option value="bullet">Bullet</option>
+                <option value="linear">Lineair</option>
+                <option value="annuity">Annuitair</option>
+                <option value="bullet">Bullet</option>
               </select>
-          </h2>
-          <h2>Opgehaalde bedrag: <input type="number" name="principle" value="{{principle::change}}"> EURO</h2>
-          <h2>Annuiteit interval:
+            </h2>
+            <h2>Opgehaalde bedrag: <input type="number" name="principle" value="{{principle::change}}"> EURO</h2>
+            <h2>Annuiteit interval:
               <select class="" name="" value="{{annuityIntervalInMonths::change}}">
-                  <option value="3">3 maanden</option>
-                  <option value="6">half jaar</option>
-                  <option value="12">jaarlijks</option>
+                <option value="3">3 maanden</option>
+                <option value="6">half jaar</option>
+                <option value="12">jaarlijks</option>
               </select>
-              </h2>
-          <h2>Leningtijd: <input type="number" step="12" name="annuityIntervalInMonths" value="{{loanTermInMonths::change}}">  [[loanTermInMonths]] maanden</h2>
-          <h2>Aflosvrije periode:  <input type="number" step="12" name="gracePeriod" value="{{gracePeriod::change}}">  [[gracePeriod]] maanden</h2>
-          <h2>Rente (per jaar): <input type="number" name="interestRate" value="{{interestRate::change}}">%</h2>
-          <h2>[[terms]] aflossingen</h2>
-          <google-chart
+            </h2>
+            <h2>Leningtijd: <input type="number" step="12" name="annuityIntervalInMonths" value="{{loanTermInMonths::change}}">
+              [[loanTermInMonths]] maanden</h2>
+            <h2>Aflosvrije periode: <input type="number" step="12" name="gracePeriod" value="{{gracePeriod::change}}">
+              [[gracePeriod]] maanden</h2>
+            <h2>Rente (per jaar): <input type="number" name="interestRate" value="{{interestRate::change}}">%</h2>
+            <h2>[[terms]] aflossingen</h2>
+            <google-chart
               type='area'
-              options='{"title": "Terugbetalingen", "xAxis": {"gridlines": 50} , "vAxis": {"minValue" : 0}, animation: {"startup": true}}'
+              options='{"title": "Terugbetalingen"}'
               cols='{{chartColumns}}'
               rows='{{chartRows}}'>
-          </google-chart>
-
-          <h2>Terugbetalingschema</h2>
-
-          <ul>
+            </google-chart>
+            <h2>Terugbetalingschema</h2>
+            <ul>
               <template is="dom-repeat" items="[[repayments]]" index-as="index">
-                <li>[[item.interestPercentage]]% [[item.interestAmount]]E -- [[item.principlePercentage]]% [[item.principleAmount]]E -- totaal: [[item.totalCurrentPayment]]E</li>
+                <li>[[item.interestPercentage]]% [[item.interestAmount]]E -- [[item.principlePercentage]]%
+                  [[item.principleAmount]]E -- totaal: [[item.totalCurrentPayment]]E</li>
               </template>
-          </ul>
-        </template>
-       </dom-bind>
+            </ul>
+          </template>
+        </dom-bind>
       </demo-snippet>
     </div>
   </body>
