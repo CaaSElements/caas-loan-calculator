@@ -1,4 +1,5 @@
 {
+  "version": "0.0.1",
   "name": "caas-loan-calculator",
   "description": "Loan calculator for crowdfunding campaigns",
   "main": "caas-loan-calculator.js",
